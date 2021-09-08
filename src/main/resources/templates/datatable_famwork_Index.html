@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="ISO-8859-1">
+  <title>Product Management System using full datatable jquey framwork</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.7.1/css/buttons.dataTables.min.css">
+
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+      div.dataTables_length {
+         padding-top: 4.68864px;
+         margin-right:9.377304px;
+
+      }
+
+
+  </style>
+</head>
+<body>
+
+<div class="container my-2">
+  <h1 class="text-center">Product List</h1>
+
+  <div class="d-flex justify-content-center">
+    <!--<a  class=" btn btn-primary btn-sm mb-3"> Add New Product </a>-->
+    <button type="button" class="btn btn-success btn-sm mb-3" data-toggle="modal" data-target="#addModal">
+        <i class="fa fa-user-plus"></i>
+      Add New Product
+    </button>
+  </div>
+
+
+  <table id="myTable"   class="display table table-striped table-responsive-md" style="width:100%">
+    <thead>
+    <tr>
+      <th>Product Id</th>
+      <th>Name</th>
+      <th>Brand</th>
+      <th>Made In</th>
+      <th>Price</th>
+      <th>Detail</th>
+      <th>Edit</th>
+      <th>Delete</th>
+
+
+    </tr>
+    </thead>
+
+    <tfoot>
+    <tr>
+      <th>Product Id</th>
+      <th>Name</th>
+      <th>Brand</th>
+      <th>Made In</th>
+      <th>Price</th>
+      <th>Detail</th>
+      <th>Edit</th>
+      <th>Delete</th>
+
+    </tr>
+    </tfoot>
+  </table>
+
+
+  <!-- The Add Modal -->
+  <div class="modal fade" id="addModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <!-- Modal Header -->
+        <form method="post" id="addFrom">
+        <div class="modal-header">
+          <h4 class="modal-title">Add Product</h4>
+          <button type="button" class="close" data-dismiss="modal" areia-hidden="true">&times;</button>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+<!--          <div class="form-group">
+            <label>Product Id</label>
+            <input type="text" class="form-control"
+                   required="required" name="id">
+
+          </div>-->
+          <div class="form-group">
+            <label>Product name</label>
+            <input type="text" class="form-control"
+                   required="required" id="name" name="name">
+
+          </div>
+          <div class="form-group">
+            <label>Product Brand</label>
+            <input type="text" class="form-control"
+                   required="required" id="brand" name="brand">
+
+          </div>
+          <div class="form-group">
+            <label>Product Made In</label>
+            <input type="text" class="form-control"
+                   required="required" id="madein" name="madein">
+
+          </div>
+          <div class="form-group">
+            <label>Product price</label>
+            <input type="text" class="form-control"
+                   required="required" id="price" name="price">
+
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancel">
+          <input type="submit" name="add" id="add" class="btn btn-success"  value="Add">
+          <!--<a id="saveBtn" class="btn btn-success" >Add</a>-->
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+    <!-- The update/Edit Modal -->
+    <div class="modal fade" id="editModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <form method="post" id="editFrom">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Edit Product</h4>
+                        <button type="button" class="close" data-dismiss="modal" areia-hidden="true">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                                  <div class="form-group">
+                                    <label>Product Id</label>
+                                    <input type="text" readonly class="form-control"
+                                           required="required" id="eid" name="eid">
+
+                                  </div>
+                        <div class="form-group">
+                            <label>Product name</label>
+                            <input type="text" class="form-control"
+                                   required="required" id="ename" name="ename">
+
+                        </div>
+                        <div class="form-group">
+                            <label>Product Brand</label>
+                            <input type="text" class="form-control"
+                                   required="required" id="ebrand" name="ebrand">
+
+                        </div>
+                        <div class="form-group">
+                            <label>Product Made In</label>
+                            <input type="text" class="form-control"
+                                   required="required" id="emadein" name="emadein">
+
+                        </div>
+                        <div class="form-group">
+                            <label>Product price</label>
+                            <input type="text" class="form-control"
+                                   required="required" id="eprice" name="eprice">
+
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancel">
+                        <input type="submit" name="edit" id="edit" class="btn btn-success"  value="Edit">
+                        <!--<a id="saveBtn" class="btn btn-success" >Add</a>-->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- The Delete Modal -->
+    <div class="modal fade" id="deleteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <form  id="deleteFrom">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete Product</h4>
+                        <button type="button" class="close" data-dismiss="modal" areia-hidden="true">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="form-group">
+
+                            <input type="hidden"  class="form-control"
+                                   required="required" id="delete_id" name="id">
+
+                        </div>
+                        <p>Are you sure you wish to remove this product?</p>
+
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancel">
+                        <input type="submit" name="delete" id="delete" class="btn btn-success"  value="Delete">
+                        <!--<a id="saveBtn" class="btn btn-success" >Add</a>-->
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- The view Modal -->
+    <div class="modal fade" id="viewModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+
+                    <div class="modal-header bg-success">
+                        <h4 class="modal-title">Product Detail</h4>
+                        <button type="button" class="close" data-dismiss="modal" areia-hidden="true">&times;</button>
+                    </div>
+
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-4"><p>Product Id </p></div>
+                            <div class="col-sm-1"><p>:</p></div>
+                            <div class="col-sm-7"><p id="vid"></p></div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"><p>Product Name </p></div>
+                            <div class="col-sm-1"><p>:</p></div>
+                            <div class="col-sm-7"><p id="vname"></p></div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"><p>Product brand </p></div>
+                            <div class="col-sm-1"><p>:</p></div>
+                            <div class="col-sm-7"><p id="vbrand"></p></div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"><p>Product Made In </p></div>
+                            <div class="col-sm-1"><p>:</p></div>
+                            <div class="col-sm-7"><p id="vmadein"></p></div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4"><p>Product Price </p></div>
+                            <div class="col-sm-1"><p>:</p></div>
+                            <div class="col-sm-7"><p id="vprice"></p></div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <input type="button" class="btn btn-secondary" data-dismiss="modal" value="Cancel">
+                    </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/plug-ins/1.10.25/dataRender/ellipsis.js"></script>
+<script src="/js/notify.js"></script>
+<script>
+var table;
+$(document).ready(function () {
+
+    $.fn.DataTable.ext.pager.numbers_length = 10;  // control pagination button length to show
+	table = $('#myTable').DataTable({
+	    dom: 'lBfrtip',             //l - length changing input control,B - Buttons, f - filtering input, t - The table!, i - Table information summary,p - pagination control,r - processing display element
+        responsive: true,
+        "processing": true,        //Enable processing display.
+
+        "scrollY": "500px",      //Vertical scrolling will constrain the DataTable to the given height, and enable scrolling for any data which overflows the current viewport
+        "scrollCollapse": true,
+
+
+        /* Enable or disable the display of a 'processing' indicator
+           when the table is being processed (e.g. a sort).
+           This is particularly useful for tables with large amounts of data
+           where it can take a noticeable amount of time to sort the entries.
+         */
+        "serverSide": false,        //Enable server-side processing.Server-side processing - where filtering, paging and sorting calculations are all performed by a server.-->
+        "searching": true,         // false off serching
+        "paging": true,            // if  false it will not show length of item per page and pagination.
+        "info": true,              // if false it will not show "Showing 1 to 10 of 86 entries"
+        "ordering": true,          // if false it will off table column sorting/ordering
+        "order": [
+                   [ 0, "asc" ]
+                 ],                // Default ordering (sorting) .column ordering in "asc"|"desc"
+        "autoWidth": true,         //
+        "pagingType": "full_numbers",
+        /*
+         numbers - Page number buttons only (1.10.8)
+         simple - 'Previous' and 'Next' buttons only
+         simple_numbers - 'Previous' and 'Next' buttons, plus page numbers
+         full - 'First', 'Previous', 'Next' and 'Last' buttons
+         full_numbers - 'First', 'Previous', 'Next' and 'Last' buttons, plus page numbers
+         first_last_numbers - 'First' and 'Last' buttons, plus page numbers
+        */
+        "lengthChange": true, //if false ,Disable user ability to change number of records per page
+         //"pageLength": 5,    Show 50 records per page when "lengthChange": false and lengthMenu disable
+        "lengthMenu": [ [5, 10, 25, 50, -1], [5, 10, 25, 50, "All"] ],
+
+        /* table cell data is grater than 10 .it will show data (string...) and
+         for that reason we add dataRender plugin libery
+         https://cdn.datatables.net/plug-ins/1.10.25/dataRender/ellipsis.js and  it is for below code */
+         columnDefs: [
+             { targets: 0, render: $.fn.dataTable.render.ellipsis(10) },
+             { targets: 1, render: $.fn.dataTable.render.ellipsis(10) },
+             { targets: 2, render: $.fn.dataTable.render.ellipsis(10) },
+             { targets: 3, render: $.fn.dataTable.render.ellipsis(10) },
+             { targets: 4, render: $.fn.dataTable.render.ellipsis(10) }
+         ],
+
+         /*The following is the default object that DataTables uses for its language strings. you can change default string value of language object.*/
+        "language": {
+             "decimal":        "",
+             "emptyTable":     "No data available in table",
+             "info":           "Showing _START_ to _END_ of _TOTAL_ entries",
+             "infoEmpty":      "Showing 0 to 0 of 0 entries",
+             "infoFiltered":   "(filtered from _MAX_ total entries)",
+             "infoPostFix":    "",
+             "thousands":      ",",
+             "lengthMenu":     "Show _MENU_ entries",
+             "loadingRecords": "Loading...",
+             "processing":     "Processing...",
+             "search":         "Search:",
+             "zeroRecords":    "No matching records found",
+             "paginate": {
+                 "first":      "First",
+                 "last":       "Last",
+                 "next":       "Next",
+                 "previous":   "Previous"
+             },
+             "aria": {
+                 "sortAscending":  ": activate to sort column ascending",
+                 "sortDescending": ": activate to sort column descending"
+             }
+        },
+
+		"ajax": {
+			"type": "GET",
+			"url": '/products',
+			"contentType": 'application/json; charset=utf-8',
+			"dataSrc": "",
+		},
+
+		"columns": [{
+				"data": "id"
+			},
+			{
+				"data": "name"
+			},
+			{
+				"data": "brand"
+			},
+			{
+				"data": "madein"
+			},
+			{
+				"data": "price"
+			},
+			{
+
+			   data: null,
+			   className: "dt-center ",
+			   defaultContent: '<i class="fa fa-id-address-card" style="color:OliveDrab;"/>',
+			   orderable: false,
+			   render: (data, type, row) => {
+					return '<button type="button" class="btn btn-sm btn-default" id="viewBtn"  data-toggle="modal" data-target="#viewModal"><i class="fa fa-address-card" title="User Detail" style="color:OliveDrab;"/></button>';
+			   }
+
+			},
+			{
+				data: null,
+				className: "dt-center editor-edit",
+				defaultContent: '<i class="fa fa-pencil" style="color:OliveDrab;"/>',
+				orderable: false,
+				render: (data, type, row) => {
+					return '<button type="button" class="btn btn-sm btn-default" id="editBtn"  data-toggle="modal" data-target="#editModal"><i class="fa fa-edit" title="Edit" style="color:OliveDrab;"/></button>';
+				}
+			},
+			{
+				data: null,
+				className: "dt-center editor-delete",
+				defaultContent: '<i class="fa fa-trash" style="color:red;"/>',
+				orderable: false,
+				render: (data, type, row) => {
+					return '<button type="button" class="btn btn-sm btn-default" id="deleteBtn"  data-toggle="modal" data-target="#deleteModal"><i class="fa fa-trash" title="Delete" style="color:red;"/></button>';
+				}
+
+			}
+		],
+		buttons: [
+
+                {
+                    extend:    'copyHtml5',
+                    text:      '<i class="fa fa-clipboard"></i> Copy',
+                    title:'Product Management System',
+                    titleAttr: 'Copy',
+                    className: 'btn ',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4]
+                    }
+                },
+                {
+                    extend:    'pdfHtml5',
+                    text:      '<i class="fa fa-file-pdf-o"></i> PDF',
+                    title:'Product Management System',
+                    titleAttr: 'PDF',
+                    className: 'btn ',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4]
+                    },
+                    customize:function(doc) {
+
+                        doc.styles.title = {
+                            color: 'red',
+                            fontSize: '30',
+                            alignment: 'center'
+                        }
+
+                        doc.styles.tableHeader = {
+                            fillColor:'#4c8aa0',
+                            color:'white',
+                            alignment:'left'
+                        }
+                        doc.content[1].table.widths = ['20%','20%','20%','20%','20%']
+                    }
+                },
+
+                {
+                    extend:    'excelHtml5',
+                    text:      '<i class="fa fa-file-excel-o"></i> Excel',
+                    title:'Product Management System',
+                    titleAttr: 'Excel',
+                    className: 'btn ',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4]
+                    },
+                    customize: function ( xlsx ){
+                         var sheet = xlsx.xl.worksheets['sheet1.xml'];
+
+                         // jQuery selector to add a border
+                         $('row c[r*="10"]', sheet).attr( 's', '25' );
+                    }
+                },
+                {
+                    extend:    'csvHtml5',
+                    text:      '<i class="fa fa-file-text-o"></i> CSV',
+                    title:'Product Management System',
+                    titleAttr: 'CSV',
+                    className: 'btn ',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4]
+                    }
+                },
+                {
+                    extend:    'print',
+                    text:      '<i class="fa fa-print"></i> Print',
+                    title:'Product Management System',
+                    titleAttr: 'Print',
+                    className: 'btn ',
+                    exportOptions: {
+                        columns: [ 0, 1, 2, 3, 4 ]
+                    },
+                    customize: function (win) {
+                        $(win.document.body).find('table').addClass('display').css('font-size', '14px');
+                        $(win.document.body).find('tr:nth-child(odd) td').each(function(index) {
+                        $(this).css('background-color','#D0D0D0');
+                        });
+                       $(win.document.body).find('h1').css('text-align','center');
+                    }
+                }
+        ]
+	});
+
+	$("#addFrom").on('submit', function (event) {
+		event.preventDefault();
+
+		$.ajax({
+
+
+			type: "POST",
+			url: "/test/save",
+			data: $('#addFrom').serialize(),
+			beforeSend: function () {
+				$('#add').val("Inserting...");
+			},
+			success: function (res) {
+
+				$('#addFrom')[0].reset();
+				$('#addModal').modal('hide');
+				$('#add').val("Add");
+				$.notify(res, {
+					globalPosition: 'top center',
+					className: 'success'
+				});
+				$('#myTable').DataTable().ajax.reload(null, false);
+
+
+			}
+
+		});
+	});
+
+	$('body').on('click', '#editBtn', function () {
+		var table = $('#myTable').DataTable();
+		//to get currently clicked row object
+		var row_data = $(this).parents('tr')[0];
+		console.log();
+		//for row data
+		var data = table.row(row_data).data();
+		console.log(data);
+		$('#eid').val(data.id);
+		$('#ename').val(data.name);
+		$('#ebrand').val(data.brand);
+		$('#emadein').val(data.madein);
+		$('#eprice').val(data.price);
+		$('#editModal').modal('show');
+
+	});
+	$('#editFrom').on("submit", function (event) {
+		event.preventDefault();
+		$.ajax({
+			type: "PUT",
+			url: "/test/edit",
+			data: $('#editFrom').serialize(),
+			beforeSend: function () {
+				$('#edit').val("Editting...");
+			},
+			success: function (res) {
+				console.log(res);
+				$('#editFrom')[0].reset();
+				$('#editModal').modal('hide');
+				$('#edit').val("Edit");
+				$.notify("Data Edited Successfully", {
+					globalPosition: 'top center',
+					className: 'success'
+				});
+				$('#myTable').DataTable().ajax.reload(null, false);
+
+			}
+
+		});
+
+	});
+
+
+	$('body').on('click', '#deleteBtn', function () {
+		var table = $('#myTable').DataTable();
+		//to get currently clicked row object
+		var row_data = $(this).parents('tr')[0];
+		console.log();
+		//for row data
+		var data = table.row(row_data).data();
+		// console.log(data);
+		$('#delete_id').val(data.id);
+		$('#deleteModal').modal('show');
+
+	});
+
+	$('#deleteFrom').on("submit", function (event) {
+		event.preventDefault();
+		$.ajax({
+			type: "DELETE",
+			url: "/test/delete",
+			data: $('#deleteFrom').serialize(),
+			beforeSend: function () {
+				$('#delete').val("deleting...");
+			},
+			success: function (res) {
+				console.log(res);
+				$('#deleteFrom')[0].reset();
+				$('#deleteModal').modal('hide');
+				$('#delete').val("Delete");
+				$.notify(res, {
+					globalPosition: 'top center',
+					className: 'success'
+				});
+				$('#myTable').DataTable().ajax.reload(null, false);
+
+			}
+
+		});
+
+	});
+
+	$('body').on('click', '#viewBtn', function () {
+		var table = $('#myTable').DataTable();
+		//to get currently clicked row object
+		var row_data = $(this).parents('tr')[0];
+		console.log();
+		//for row data
+		var data = table.row(row_data).data();
+		console.log(data);
+		$('#vid').text(data.id.length >10 ? data.id.substring(0,10) + "..." : data.id);
+		console.log($('#vid').val());
+		$('#vname').text(data.name.length >10 ? data.name.substring(0,10) + "..." : data.name);
+		$('#vbrand').text(data.brand.length >10 ? data.brand.substring(0,10) + "..." : data.brand);
+		$('#vmadein').text(data.madein.length >10 ? data.madein.substring(0,10) + "..." : data.madein);
+		$('#vprice').text(data.price.length >10 ? data.price.substring(0,10) + "..." : data.price);
+		$('#viewModal').modal('show');
+
+	});
+
+
+});
+
+</script>
+</body>
+</html>

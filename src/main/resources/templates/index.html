@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="ISO-8859-1">
+    <title>Product Management System using full thymleaf</title>
+
+<!--    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+          crossorigin="anonymous">-->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+
+<div class="container my-2">
+    <h1 class="text-center">Product List</h1>
+
+    <div class="d-flex justify-content-center">
+        <a href="/new" class="btn btn-primary btn-sm mb-3"> Add New Product </a>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label for="entrylist">Show:</label>
+                <select class="form-control-sm" id="Selection">
+                    <option value="1" >1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="25">25</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select>
+                <label >entries</label>
+            </div>
+
+
+        </div>
+        <div class="col-sm-6 ">
+<!--            <div class="form-group float-right">
+                <input type="text"  id="searchIteam" size="30" />
+                &nbsp;
+                <input type="button" id="searchButton" value="Search"  />
+                &nbsp;
+                <input type="button" value="Clear" id="btnClear"  />
+            </div>-->
+        </div>
+    </div>
+
+
+
+    <table border="1" class="table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th>
+                <a  th:href="@{'/page/' + ${currentPage} + '?sortField=id&sortDir=' + ${reverseSortDir}}">Product Id
+                    <span ><i th:if="${sortField != 'id' }" class="fa fa-fw fa-sort"></i></span>
+                    <span ><i th:if="${sortDir == 'asc' && sortField == 'id' }" class="fa fa-fw fa-sort-asc"></i></span>
+                    <span ><i th:if="${sortDir == 'desc' && sortField == 'id' }" class="fa fa-fw fa-sort-desc"></i></span>
+                </a>
+            </th>
+            <th>
+                <a th:href="@{'/page/' + ${currentPage} + '?sortField=name&sortDir=' + ${reverseSortDir}}">Name
+                    <span ><i th:if="${sortField != 'name' }" class="fa fa-fw fa-sort"></i></span>
+                    <span ><i th:if="${sortDir == 'asc' && sortField == 'name' }" class="fa fa-fw fa-sort-asc"></i></span>
+                    <span ><i th:if="${sortDir == 'desc' && sortField == 'name' }" class="fa fa-fw fa-sort-desc"></i></span>
+                </a>
+            </th>
+            <th>
+                <a th:href="@{'/page/' + ${currentPage} + '?sortField=brand&sortDir=' + ${reverseSortDir}}">Brand
+                    <span ><i th:if="${sortField != 'brand' }" class="fa fa-fw fa-sort"></i></span>
+                    <span ><i th:if="${sortDir == 'asc' && sortField == 'brand' }" class="fa fa-fw fa-sort-asc"></i></span>
+                    <span ><i th:if="${sortDir == 'desc' && sortField == 'brand' }" class="fa fa-fw fa-sort-desc"></i></span>
+                </a>
+            </th>
+            <th>
+                <a th:href="@{'/page/' + ${currentPage} + '?sortField=madein&sortDir=' + ${reverseSortDir}}" >Made In
+                    <span ><i th:if="${sortField != 'madein' }" class="fa fa-fw fa-sort"></i></span>
+                    <span ><i th:if="${sortDir == 'asc' && sortField == 'madein' }" class="fa fa-fw fa-sort-asc"></i></span>
+                    <span ><i th:if="${sortDir == 'desc' && sortField == 'madein' }" class="fa fa-fw fa-sort-desc"></i></span>
+                </a>
+            </th>
+            <th>
+                <a th:href="@{'/page/' + ${currentPage} + '?sortField=price&sortDir=' + ${reverseSortDir}}">Price
+                    <span ><i th:if="${sortField != 'price' }" class="fa fa-fw fa-sort"></i></span>
+                    <span ><i th:if="${sortDir == 'asc' && sortField == 'price' }" class="fa fa-fw fa-sort-asc"></i></span>
+                    <span ><i th:if="${sortDir == 'desc' && sortField == 'price' }" class="fa fa-fw fa-sort-desc"></i></span>
+                </a>
+            </th>
+            <th> Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="product : ${listProducts}">
+            <td th:text="${product.id}"></td>
+            <td th:text="${product.name}"></td>
+            <td th:text="${product.brand}"></td>
+            <td th:text="${product.madein}"></td>
+            <td th:text="${product.price}"></td>
+            <td><a th:href="@{/edit/{id}(id=${product.id})}" class="btn btn-primary btn-sm ">Update</a>
+                <a th:href="@{/delete/{id}(id=${product.id})}" class="btn btn-danger btn-sm ">Delete</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div><i>Sorted by <span style="color:red">[[${sortField}]]</span>  in <span style="color:red">[[${sortDir}]]</span> order</i></div>
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="text-left m-1">
+                <span>Showing [[${startCount}]] to [[${endCount}]] of [[${totalPages}]] entries</span>
+
+            </div>
+        </div>
+
+        <div class="col-sm-8">
+            <!--    to learn about Spring Boot Many-Page Pagination using Thymeleaf and Bootstrap
+            visit video link-&ndash;&gt; https://www.youtube.com/watch?v=_67pXB1JHTo&ab_channel=CodeJava-->
+
+            <div>
+                <nav>
+                    <ul class="pagination justify-content-end flex-wrap" >
+                        <li th:class="${currentPage > 1 ?'page-item' : 'page-item disabled'}">
+                            <a class="page-link" th:href="@{'/page/1'+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Fast</a>
+                        </li>
+                        <li th:class="${currentPage > 1 ?'page-item' : 'page-item disabled'}">
+                            <a class="page-link" th:href="@{'/page/' + ${currentPage - 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Previous</a>
+                        </li>
+
+                        <th:block th:if="${totalPages <= 10}">
+                            <li th:each="i: ${#numbers.sequence(1, totalPages)}" th:class="${currentPage != i ?'page-item' : 'page-item disabled'}">
+                                <a class="page-link " th:href="@{'/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                            </li>
+                        </th:block>
+
+                        <th:block th:if="${totalPages > 10}">
+
+                            <th:block th:if="${currentPage <= 5 || currentPage > totalPages-4}">
+                                <li th:each="i: ${#numbers.sequence(1, 5)}" th:class="${currentPage != i ?'page-item' : 'page-item disabled'}">
+                                    <a class="page-link " th:href="@{'/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                                </li>
+                                <a class="page-link " th:href="@{'/page/' + 6+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">...</a>
+                                <li th:each="i: ${#numbers.sequence(totalPages - 4, totalPages)}" th:class="${currentPage != i ?'page-item' : 'page-item disabled'}">
+                                    <a class="page-link " th:href="@{'/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                                </li>
+                            </th:block>
+
+
+                            <th:block th:if="${currentPage > 5 && currentPage < totalPages-4}">
+                                <a class="page-link " th:href="@{'/page/' + ${currentPage - 5}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">...</a>
+                                <li th:each="i: ${#numbers.sequence(currentPage - 4, currentPage + 4)}" th:class="${currentPage != i ?'page-item' : 'page-item disabled'}">
+                                    <a class="page-link " th:href="@{'/page/' + ${i}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+                                </li>
+
+                                <a class="page-link " th:href="@{'/page/' + ${currentPage + 5}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">...</a>
+                            </th:block>
+
+
+                        </th:block>
+
+
+
+                        <li th:class="${currentPage < totalPages ?'page-item' : 'page-item disabled'}">
+                            <a class="page-link" th:href="@{'/page/' + ${currentPage + 1}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Next</a>
+                        </li>
+                        <li th:class="${currentPage < totalPages ?'page-item' : 'page-item disabled'}">
+                            <a class="page-link" th:href="@{'/page/' + ${totalPages}+ '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Last</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+ $(document).ready(function(){
+
+  var selectedItem = sessionStorage.getItem("SelectedItem");
+    if(selectedItem==null){
+       $("#Selection").val(1);
+    }else{
+       $("#Selection").val(selectedItem);
+    }
+
+    var a="[[${startCount}]]";
+
+   $("select").change(function(){
+      var entrylist = $(this).children("option:selected").val();
+      sessionStorage.setItem("SelectedItem", entrylist);
+      var url ="http://localhost:8080/row/"+entrylist+"/"+a;
+      window.location.href =url;
+
+   });
+
+
+/*$('#searchButton').on('click', function() {
+     var value=$("#searchIteam").val().toLowerCase();
+     window.location.href="http://localhost:8080/1/"+value;
+});*/
+
+
+
+/*$('#btnClear').on('click', function() {
+     window.location.href="http://localhost:8080/";
+});*/
+
+
+ });
+
+
+</script>
+</body>
+</html>
